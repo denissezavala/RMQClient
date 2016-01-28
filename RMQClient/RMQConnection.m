@@ -88,6 +88,23 @@
                                           methodID:@(11)]
                     error: &innerError
                onComplete:^{
+                   [self sendConnectionTuneOk];
+               }];
+}
+
+- (void)sendConnectionTuneOk {
+    AMQEncoder *encoder = [AMQEncoder new];
+    AMQProtocolConnectionTuneOk *tuneOk = [[AMQProtocolConnectionTuneOk alloc]
+                                           // TODO: use real values
+                                           initWithChannelMax:@(0)
+                                           frameMax:@(0)
+                                           heartbeat:@(0)];
+    [tuneOk encodeWithCoder:encoder];
+    NSError *error = NULL;
+    [self.transport write:[encoder frameForClassID:@(10)
+                                          methodID:@(30)]
+                    error: &error
+               onComplete:^{
                    
                }];
 }

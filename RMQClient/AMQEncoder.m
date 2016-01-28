@@ -70,6 +70,10 @@
         return [self encodeLongString:objv[@"value"]];
     } else if ([objv[@"type"] isEqualToString:@"short-string"]) {
         return [self encodeShortString:objv[@"value"]];
+    } else if ([objv[@"type"] isEqualToString:@"short"]) {
+        return [self encodeShortUInt:[objv[@"value"] integerValue]];
+    } else if ([objv[@"type"] isEqualToString:@"long"]) {
+        return [self encodeLongUInt:[objv[@"value"] integerValue]];
     } else if ([objv[@"type"] isEqualToString:@"boolean"]) {
         return [self encodeBoolean:objv[@"value"]];
     } else if ([objv[@"type"] isEqualToString:@"field-table"]) {

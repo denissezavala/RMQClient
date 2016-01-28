@@ -59,6 +59,30 @@ class AMQEncodingTest: XCTestCase {
         XCTAssertEqual(expectedData, encoder.data)
     }
     
+    func testShortBecomesTwoBytes () {
+        let encoder = AMQEncoder()
+        
+        let expectedData = NSMutableData()
+        expectedData.appendData("\u{00}\u{05}".dataUsingEncoding(NSASCIIStringEncoding)!)
+        
+        let short = ["type": "short", "value": 5]
+        
+        encoder.encodeObject(short, forKey: "foo")
+        TestHelper.assertEqualBytes(expectedData, actual: encoder.data)
+    }
+    
+    func testLongBecomesFourBytes () {
+        let encoder = AMQEncoder()
+        
+        let expectedData = NSMutableData()
+        expectedData.appendData("\u{00}\u{00}\u{00}\u{05}".dataUsingEncoding(NSASCIIStringEncoding)!)
+        
+        let long = ["type": "long", "value": 5]
+        
+        encoder.encodeObject(long, forKey: "foo")
+        TestHelper.assertEqualBytes(expectedData, actual: encoder.data)
+    }
+    
     func testAppend() {
         let encoder = AMQEncoder()
         

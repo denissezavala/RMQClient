@@ -46,4 +46,19 @@ class RMQConnectionTest: XCTestCase {
         startOk.encodeWithCoder(coder)
         TestHelper.assertEqualBytes(coder.frameForClassID(10, methodID: 11), actual: transport.lastWrite())
     }
+    
+    func testSendsConnectionTuneOK() {
+        let transport = FakeTransport()
+        let conn = RMQConnection(user: "egon", password: "spengler", vhost: "baz", transport: transport)
+        
+        transport.receive(Fixtures.tune());
+        conn.start()
+        
+        let coder = AMQEncoder()
+        
+        let tuneOK = AMQProtocolConnectionTuneOk(channelMax: 0, frameMax: 0, heartbeat: 0)
+        tuneOK.encodeWithCoder(coder)
+        
+        TestHelper.assertEqualBytes(coder.frameForClassID(10, methodID: 30), actual: transport.lastWrite())
+    }
 }

@@ -98,3 +98,36 @@
 }
 
 @end
+
+@interface AMQProtocolConnectionTuneOk ()
+
+@property (nonnull, copy, nonatomic, readwrite) NSNumber *channelMax;
+@property (nonnull, copy, nonatomic, readwrite) NSNumber *frameMax;
+@property (nonnull, copy, nonatomic, readwrite) NSNumber *heartbeat;
+
+@end
+
+@implementation AMQProtocolConnectionTuneOk
+
+- (instancetype)initWithChannelMax:(NSNumber *)channelMax
+                           frameMax:(NSNumber *)frameMax
+                          heartbeat:(NSNumber *)heartbeat {
+    self = [super init];
+    if (self) {
+        self.channelMax = channelMax;
+        self.frameMax = frameMax;
+        self.heartbeat = heartbeat;
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [coder encodeObject:@{@"type": @"short", @"value": self.channelMax}
+                 forKey:@"10_30_channel-max"];
+    [coder encodeObject:@{@"type": @"long", @"value": self.frameMax}
+                 forKey:@"10_30_frame-max"];
+    [coder encodeObject:@{@"type": @"short", @"value": self.heartbeat}
+                 forKey:@"10_30_heartbeat"];
+}
+
+@end

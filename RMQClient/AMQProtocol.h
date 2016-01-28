@@ -35,3 +35,11 @@
                                           locale:(nonnull NSString *)locale;
 
 @end
+
+@interface AMQProtocolConnectionTuneOk : MTLModel<NSCoding>
+
+- (nonnull instancetype)initWithChannelMax:(nonnull NSNumber *)channelMax
+                                  frameMax:(nonnull NSNumber *)frameMax
+                                  heartbeat:(nonnull NSNumber *)heartbeat;
+
+@end
